@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">GyManager</string>
+    <string name="app_name">GyManager Beta</string>
+    <string name="search_title">Search</string>
 </resources>
