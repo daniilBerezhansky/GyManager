@@ -5,14 +5,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.Toolbar;
 
-public class ActivityMain extends Activity {
+public class ActivityMain extends AppCompatActivity {
     private android.support.v7.widget.Toolbar toolbar;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-
+        setTheme(R.style.AppDefault);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initToolbar();
