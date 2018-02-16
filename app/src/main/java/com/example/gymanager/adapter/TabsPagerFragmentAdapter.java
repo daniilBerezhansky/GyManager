@@ -4,6 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.example.gymanager.fragment.ExampleFragment;
+
 public class TabsPagerFragmentAdapter extends FragmentPagerAdapter {
     private  String[] tabs;
     public TabsPagerFragmentAdapter(FragmentManager fm) {
@@ -23,9 +25,9 @@ public class TabsPagerFragmentAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position){
-            case 0:break;
-            case 1:break;
-            case 2:break;
+            case 0:return ExampleFragment.getInstanse();
+            case 1:return ExampleFragment.getInstanse();
+            case 2:return ExampleFragment.getInstanse();
         }
         return null;
     }
