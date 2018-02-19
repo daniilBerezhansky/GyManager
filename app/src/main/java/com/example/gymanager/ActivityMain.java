@@ -1,12 +1,8 @@
 package com.example.gymanager;
 
-import android.app.Activity;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -14,10 +10,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toolbar;
 
-import com.example.gymanager.adapter.TabsPagerFragmentAdapter;
+import com.example.gymanager.adapter.TabsFragmentAdapter;
 
 public class ActivityMain extends AppCompatActivity {
     private static final int LAYOUT = R.layout.activity_main;
@@ -54,7 +48,7 @@ public class ActivityMain extends AppCompatActivity {
     private void initTabs() {
         viewPager = findViewById(R.id.viewPager);
         TabLayout tabLayout = findViewById(R.id.tab_layout);
-        TabsPagerFragmentAdapter adapter = new TabsPagerFragmentAdapter(getSupportFragmentManager());
+        TabsFragmentAdapter adapter = new TabsFragmentAdapter(getApplicationContext(),getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
     }
