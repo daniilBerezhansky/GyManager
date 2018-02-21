@@ -10,8 +10,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.example.gymanager.adapter.TabsFragmentAdapter;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.IgnoreExtraProperties;
+
+import java.io.Serializable;
 
 public class ActivityMain extends AppCompatActivity {
     private static final int LAYOUT = R.layout.activity_main;
@@ -22,8 +30,9 @@ public class ActivityMain extends AppCompatActivity {
 
     private ViewPager viewPager;
 
+
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable final Bundle savedInstanceState) {
         setTheme(R.style.AppDefault);
         super.onCreate(savedInstanceState);
         setContentView(LAYOUT);
@@ -31,6 +40,8 @@ public class ActivityMain extends AppCompatActivity {
         initNavigationView();
         initTabs();
         tabLayout = findViewById(R.id.tab_layout);
+
+
     }
 
     private void initToolbar() {
@@ -76,4 +87,5 @@ public class ActivityMain extends AppCompatActivity {
     private void showNotificationTab(){
         viewPager.setCurrentItem(Constants.TAB_TWO);
     }
+
 }
