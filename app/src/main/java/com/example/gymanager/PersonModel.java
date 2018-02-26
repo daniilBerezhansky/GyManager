@@ -1,13 +1,15 @@
 package com.example.gymanager;
 
 public class PersonModel {
-    private long id;
-    private String firstName,secondName,email;
+   // private long id;
+    private String firstName,secondName,email,start,end;
 
-    public PersonModel(String firstName, String secondName, String email) {
+    public PersonModel(String firstName, String secondName, String email, String start, String end) {
         this.firstName = firstName;
         this.secondName = secondName;
         this.email = email;
+        this.start = start;
+        this.end = end;
     }
     public PersonModel(){
 
@@ -24,9 +26,15 @@ public class PersonModel {
         return email;
     }
 
-    public long getId() {
+ /* public long getId() {
         return id;
+    }*/
+
+    public String getStart() {
+        return start;
     }
 
-
+    public String getEnd() {
+        return end;
+    }
 }

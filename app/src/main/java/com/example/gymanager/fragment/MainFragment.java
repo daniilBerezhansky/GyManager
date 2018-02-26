@@ -1,51 +1,49 @@
-package com.example.gymanager;
+package com.example.gymanager.fragment;
 
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.view.ViewGroup;
 
+import com.example.gymanager.Constants;
+import com.example.gymanager.R;
 import com.example.gymanager.adapter.TabsFragmentAdapter;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.IgnoreExtraProperties;
 
-import java.io.Serializable;
 
-public class ActivityMain extends AppCompatActivity {
-    private static final int LAYOUT = R.layout.activity_main;
+public class MainFragment extends Fragment {
 
+    private ViewPager viewPager;
     private android.support.v7.widget.Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private TabLayout tabLayout;
+    public static MainFragment newInstance(String param1, String param2) {
+        MainFragment fragment = new MainFragment();
+        Bundle args = new Bundle();
 
-    private ViewPager viewPager;
+        fragment.setArguments(args);
+        return fragment;
+    }
+
 
 
     @Override
-    protected void onCreate(@Nullable final Bundle savedInstanceState) {
-        setTheme(R.style.AppDefault);
-        super.onCreate(savedInstanceState);
-        setContentView(LAYOUT);
-        initToolbar();
-        initNavigationView();
-        initTabs();
-        tabLayout = findViewById(R.id.tab_layout);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView =  inflater.inflate(R.layout.fragment_main, container, false);
 
-
-    }
-
-    private void initToolbar() {
-        toolbar = findViewById(R.id.ToolBar);
+        toolbar = rootView.findViewById(R.id.ToolBar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         toolbar.setTitle(R.string.app_name);
         toolbar.setOnMenuItemClickListener(new android.support.v7.widget.Toolbar.OnMenuItemClickListener() {
             @Override
@@ -54,25 +52,12 @@ public class ActivityMain extends AppCompatActivity {
             }
         });
         toolbar.inflateMenu(R.menu.menu);
-    }
-
-    private void initTabs() {
-        viewPager = findViewById(R.id.viewPager);
-        TabLayout tabLayout = findViewById(R.id.tab_layout);
-        TabsFragmentAdapter adapter = new TabsFragmentAdapter(getApplicationContext(),getSupportFragmentManager());
-        viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(0);
-        tabLayout.setupWithViewPager(viewPager);
-    }
-
-
-    private void initNavigationView() {
-        drawerLayout = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.view_navigation_open,R.string.view_navigation_close);
+        drawerLayout = rootView.findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(),drawerLayout,toolbar,R.string.view_navigation_open,R.string.view_navigation_close);
 
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-        NavigationView navigationView = findViewById(R.id.navigation);
+        NavigationView navigationView = rootView.findViewById(R.id.navigation);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -84,9 +69,15 @@ public class ActivityMain extends AppCompatActivity {
                 return  true;
             }
         });
+        viewPager = rootView.findViewById(R.id.viewPager);
+        TabLayout tabLayout = rootView.findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
+        return rootView;
     }
+
     private void showNotificationTab(){
         viewPager.setCurrentItem(Constants.TAB_TWO);
     }
+
 
 }
