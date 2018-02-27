@@ -17,11 +17,15 @@ import java.util.Map;
 public class TabsFragmentAdapter extends FragmentPagerAdapter {
     private Map<Integer,AbstractTabFragment> tabs;
     private Context context;
-    public TabsFragmentAdapter(Context context, FragmentManager fm) {
+   public TabsFragmentAdapter(Context context, FragmentManager fm) {
         super(fm);
         this.context = context;
         initTabsMap(context);
     }
+/*   public TabsFragmentAdapter(FragmentManager fm) {
+       super(fm);
+     //  this.context = context;
+   }*/
 
     @Override
     public CharSequence getPageTitle(int position) {

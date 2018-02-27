@@ -13,14 +13,14 @@ import com.example.gymanager.R;
 
 public class personInfFragment extends AbstractTabFragment {
 
-    public static personInfFragment getInstance(){
+    /*public static personInfFragment getInstance(){
         Bundle args = new Bundle();
         personInfFragment fragment = new personInfFragment();
         fragment.setArguments(args);
         //fragment.setContext(context);
       //  fragment.setTitle(context.getString(R.string.tab_navigation_history));
         return fragment;
-    }
+    }*/
 
     public personInfFragment() {
         // Required empty public constructor

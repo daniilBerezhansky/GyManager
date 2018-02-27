@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.gymanager.adapter.TabsFragmentAdapter;
+import com.example.gymanager.fragment.MainFragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
@@ -36,15 +39,18 @@ public class ActivityMain extends AppCompatActivity {
         setTheme(R.style.AppDefault);
         super.onCreate(savedInstanceState);
         setContentView(LAYOUT);
-        initToolbar();
+        Fragment fragment = new MainFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment).commitAllowingStateLoss();
+       /* initToolbar();
         initNavigationView();
-        initTabs();
+        initTabs();*/
         tabLayout = findViewById(R.id.tab_layout);
 
 
     }
 
-    private void initToolbar() {
+   /* private void initToolbar() {
         toolbar = findViewById(R.id.ToolBar);
         toolbar.setTitle(R.string.app_name);
         toolbar.setOnMenuItemClickListener(new android.support.v7.widget.Toolbar.OnMenuItemClickListener() {
@@ -87,6 +93,6 @@ public class ActivityMain extends AppCompatActivity {
     }
     private void showNotificationTab(){
         viewPager.setCurrentItem(Constants.TAB_TWO);
-    }
+    }*/
 
 }
