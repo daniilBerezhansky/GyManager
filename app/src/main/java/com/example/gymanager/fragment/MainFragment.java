@@ -1,25 +1,38 @@
 package com.example.gymanager.fragment;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.gymanager.Constants;
+import com.example.gymanager.PersonModel;
 import com.example.gymanager.R;
+import com.example.gymanager.adapter.TabsFragmentAdapter;
+import com.example.gymanager.adapter.ViewListAdapter;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import static com.example.gymanager.Constants.URL.GET_PERSON;
 
 
 public class MainFragment extends Fragment {
@@ -28,6 +41,8 @@ public class MainFragment extends Fragment {
     private android.support.v7.widget.Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private TabLayout tabLayout;
+    TabsFragmentAdapter adapter;
+    private ViewListAdapter vAdapter;
     public static MainFragment newInstance(String param1, String param2) {
         MainFragment fragment = new MainFragment();
         Bundle args = new Bundle();
@@ -43,8 +58,7 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.fragment_main, container, false);
 
-        toolbar = rootView.findViewById(R.id.ToolBar);
-       // ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        toolbar = rootView.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.app_name);
         toolbar.setOnMenuItemClickListener(new android.support.v7.widget.Toolbar.OnMenuItemClickListener() {
             @Override
@@ -55,7 +69,6 @@ public class MainFragment extends Fragment {
         toolbar.inflateMenu(R.menu.menu);
         drawerLayout = rootView.findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(),drawerLayout,toolbar,R.string.view_navigation_open,R.string.view_navigation_close);
-
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = rootView.findViewById(R.id.navigation);
@@ -73,7 +86,10 @@ public class MainFragment extends Fragment {
         viewPager = rootView.findViewById(R.id.viewPager);
         TabLayout tabLayout = rootView.findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
+
         setupViewPager(viewPager);
+
+
         return rootView;
     }
 
@@ -83,41 +99,53 @@ public class MainFragment extends Fragment {
 
     private void setupViewPager(ViewPager viewPager) {
 
-       // TabsFragmentAdapter adapter = new TabsFragmentAdapter(getContext(),getChildFragmentManager());
-        Adapter adapter = new Adapter(getChildFragmentManager());
-        adapter.addFragment(new addNewFragment(), this.getString(R.string.add));
-        adapter.addFragment(new viewFragment(),  this.getString(R.string.view));
-        adapter.addFragment(new historyFragment(),  this.getString(R.string.history));
+        adapter = new TabsFragmentAdapter(getChildFragmentManager(),getContext(), new ArrayList<PersonModel>());
+        try {
+            new PersonTask().execute();
+        }
+        catch (RuntimeException e){
+            Log.d("Error","Error");
+            System.exit(0);
+        }
         viewPager.setAdapter(adapter);
+
+
         viewPager.setCurrentItem(0);
 
     }
-    static class Adapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragments = new ArrayList<>();
-        private final List<String> mFragmentTitles = new ArrayList<>();
 
-        private Adapter(FragmentManager fm) {
-            super(fm);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home: {
+
+                drawerLayout.openDrawer(GravityCompat.START);
+
+                return true;
+            }
         }
+        return super.onOptionsItemSelected(item);
+    }
 
-        private void addFragment(Fragment fragment, String title) {
-            mFragments.add(fragment);
-            mFragmentTitles.add(title);
-        }
-
+    private class PersonTask extends AsyncTask<PersonModel,Object,List<PersonModel>>  {
         @Override
-        public Fragment getItem(int position) {
-            return mFragments.get(position);
-        }
+        protected List<PersonModel> doInBackground(PersonModel... personModels){
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
-        @Override
-        public int getCount() {
-            return mFragments.size();
-        }
+                ResponseEntity<PersonModel[]> responseEntity = restTemplate.getForEntity(GET_PERSON, PersonModel[].class);
+                List<PersonModel> list = Arrays.asList(responseEntity.getBody());
+                return list;
 
+        }
         @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitles.get(position);
+        protected void onPostExecute(List<PersonModel> personModels) {
+            List<PersonModel> list = new ArrayList<PersonModel>();
+
+            list.addAll(personModels);
+
+            adapter.setData(list);
+
         }
     }
 

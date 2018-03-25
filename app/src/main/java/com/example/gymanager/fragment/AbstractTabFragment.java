@@ -6,7 +6,7 @@ import android.view.View;
 
 public class AbstractTabFragment extends Fragment {
     private  String title;
-    protected View view;
+    protected View rootView;
     protected Context context;
     public  String getTitle() {
         return title;

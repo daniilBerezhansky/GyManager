@@ -23,8 +23,8 @@ public class historyFragment extends AbstractTabFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_history,container,false);
-        return  view;
+        rootView = inflater.inflate(R.layout.fragment_history,container,false);
+        return rootView;
     }
 
 

@@ -2,6 +2,7 @@ package com.example.gymanager.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,7 @@ public class ViewListAdapter extends RecyclerView.Adapter<ViewListAdapter.AllPer
 
     @Override
     public AllPersonGridHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.all_person_item,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.all_person_item,null);
         return new AllPersonGridHolder(v);
     }
 
@@ -49,7 +50,7 @@ public class ViewListAdapter extends RecyclerView.Adapter<ViewListAdapter.AllPer
         private TextView first_name , second_name;
         private AllPersonGridHolder(View itemView) {
             super(itemView);
-
+            itemView.setOnClickListener(this);
             this.first_name  =  itemView.findViewById(R.id.first_name);
             this.second_name =  itemView.findViewById(R.id.second_name);
             itemView.setOnClickListener(this);
@@ -58,11 +59,13 @@ public class ViewListAdapter extends RecyclerView.Adapter<ViewListAdapter.AllPer
         @Override
         public void onClick(View v) {
 
-            NavigationUtils.navigateToPerson(mContext,getAdapterPosition());
+            NavigationUtils.navigateToPerson(mContext,getAdapterPosition(),allPersonList.get(getAdapterPosition()));
+
         }
 
     }
 
-
-
+    public void setData(List<PersonModel> allPersonList) {
+        this.allPersonList = allPersonList;
+    }
 }
